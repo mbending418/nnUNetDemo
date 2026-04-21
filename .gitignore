@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+/.idea/
+
+/dist/
+
+/notebook_demos/.ipynb_checkpoints
