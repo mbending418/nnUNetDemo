@@ -136,7 +136,7 @@ def run_setup_amos22(input_folder: str,
     os.environ["nnUNet_preprocessed"] = os.path.join(output_folder, "nnUNet_preprocessed")
     os.environ["nnUNet_results"] = os.path.join(output_folder, "nnUNet_results")
 
-    extract_fingerprints(dataset_ids = [0],
+    extract_fingerprints(dataset_ids = [dataset_id],
                          check_dataset_integrity=True)
-    plans_identifier = plan_experiments(dataset_ids = [0])
-    preprocess(dataset_ids = [0],plans_identifier=plans_identifier)
+    plans_identifier = plan_experiments(dataset_ids = [dataset_id])
+    preprocess(dataset_ids = [dataset_id],plans_identifier=plans_identifier)
