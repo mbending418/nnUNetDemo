@@ -74,6 +74,10 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
         dest_image = os.path.join(dest_folder, "imagesTr", f"{case}_0000{NIFTI_FILE_ENDING}")
         dest_label = os.path.join(dest_folder, "labelsTr", f"{case}{NIFTI_FILE_ENDING}")
 
+        if not os.path.isdir(dest_image):
+            os.makedirs(dest_image)
+        if not os.path.isdir(dest_label):
+            os.makedirs(dest_label)
         shutil.copyfile(src_image, dest_image)
 
         label = nib.load(src_label)
