@@ -33,7 +33,7 @@ def fix_amos(data_folder, dataset):
         label_obj = nib.load(label_file)
         label_data = label_obj.get_fdata()
 
-        new_data = nib.Nifti1Image(label_data==code, affine=label_obj.affine, header=label_obj.header)
+        new_data = nib.Nifti1Image(abs(label_data-code) < .1, affine=label_obj.affine, header=label_obj.header)
         nib.save(new_data, label_file)
 
     with open(os.path.join(dataset_folder, "dataset.json"), "w") as fj:
