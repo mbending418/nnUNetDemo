@@ -112,7 +112,7 @@ def run_sort_amos22(input_folder: str, subfolders_to_sort: tuple[str, ...]):
 @click.argument('input_folder', type=click.Path(exists=True))
 @click.argument('dataset_name', type=str)
 @click.argument("output_folder", type=str, default="output")
-@click.argument('modality', type=Literal["CT", "T2"])
+@click.argument('modality', type=str)
 @click.argument('label_names', type=str, nargs=-1)
 def run_setup_amos22(input_folder: str,
                      dataset_name: str,
