@@ -132,9 +132,9 @@ def run_setup_amos22(input_folder: str,
                    output_folder=output_folder)
 
     #add paths to environment variables
-    os.environ["nnUNet_raw"] = os.path.join(output_folder, MODALITY_FOLDERS[modality], "nnUNet_raw")
-    os.environ["nnUNet_preprocessed"] = os.path.join(output_folder, MODALITY_FOLDERS[modality], "nnUNet_preprocessed")
-    os.environ["nnUNet_results"] = os.path.join(output_folder, MODALITY_FOLDERS[modality], "nnUNet_results")
+    os.environ["nnUNet_raw"] = os.path.join(output_folder, "nnUNet_raw")
+    os.environ["nnUNet_preprocessed"] = os.path.join(output_folder, "nnUNet_preprocessed")
+    os.environ["nnUNet_results"] = os.path.join(output_folder, "nnUNet_results")
 
     extract_fingerprints(dataset_ids = [0],
                          check_dataset_integrity=True)
