@@ -52,6 +52,13 @@ def sort_amos22(input_folder: str,
         "Ts" refers to the test set
     :return:
     """
+    if os.path.isdir(os.path.join(input_folder, MODALITY_FOLDERS["CT"])):
+        raise Exception(f"CT Data directory already present: {os.path.join(input_folder, MODALITY_FOLDERS["CT"])}")
+    if os.path.isdir(os.path.join(input_folder, MODALITY_FOLDERS["T2"])):
+        raise Exception(f"MR Data directory already present: {os.path.join(input_folder, MODALITY_FOLDERS["T2"])}")
+    os.makedirs(os.path.join(input_folder, MODALITY_FOLDERS["CT"]))
+    os.makedirs(os.path.join(input_folder, MODALITY_FOLDERS["T2"]))
+
     for subfolder in subfolders_to_sort:
         image_input_folder = os.path.join(input_folder, f"images{subfolder}")
         label_input_folder = os.path.join(input_folder, f"labels{subfolder}")
