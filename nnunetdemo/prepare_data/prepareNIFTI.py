@@ -84,7 +84,7 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
         shutil.copyfile(src_image, dest_image)
 
         label = nib.load(src_label)
-        label_data = label.getfdata()
+        label_data = label.get_fdata()
         mask = label_data==label_data
         for label_code in label_map.values():
             mask *= label_data!=label_code
