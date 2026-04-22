@@ -69,15 +69,19 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
 
             case_map[case] = (case_image, case_label)
 
+    dest_folder = os.path.join(output_folder, "nnUNet_raw", f"Dataset001_{dataset_name}")
+    if not os.path.isdir(dest_folder):
+        os.makedirs(dest_folder)
+    if not os.path.isdir(os.path.join(dest_folder, "imagesTr")):
+        os.makedirs(os.path.join(dest_folder, "imagesTr"))
+    if not os.path.isdir(os.path.join(dest_folder, "labelsTr")):
+        os.makedirs(os.path.join(dest_folder, "labelsTr"))
+
+
     for case, (src_image, src_label) in case_map.items():
-        dest_folder = os.path.join(output_folder, "nnUNet_raw", f"Dataset001_{dataset_name}")
         dest_image = os.path.join(dest_folder, "imagesTr", f"{case}_0000{NIFTI_FILE_ENDING}")
         dest_label = os.path.join(dest_folder, "labelsTr", f"{case}{NIFTI_FILE_ENDING}")
 
-        if not os.path.isdir(dest_image):
-            os.makedirs(dest_image)
-        if not os.path.isdir(dest_label):
-            os.makedirs(dest_label)
         shutil.copyfile(src_image, dest_image)
 
         label = nib.load(src_label)
