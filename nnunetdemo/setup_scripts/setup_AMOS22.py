@@ -62,11 +62,11 @@ def sort_amos22(input_folder: str,
                 print(f"WARNING: cannot find label file for {case}. Skipping.")
                 continue
             if is_ct(case):
-                output_image_folder = os.path.join(input_folder, MODALITY_FOLDERS["CT"], "imagesTr", case)
-                output_label_folder = os.path.join(input_folder, MODALITY_FOLDERS["CT"], "labelsTr", case)
+                output_image_folder = os.path.join(input_folder, MODALITY_FOLDERS["CT"], "imagesTr")
+                output_label_folder = os.path.join(input_folder, MODALITY_FOLDERS["CT"], "labelsTr")
             else:
-                output_image_folder = os.path.join(input_folder, MODALITY_FOLDERS["T2"], "imagesTr", case)
-                output_label_folder = os.path.join(input_folder, MODALITY_FOLDERS["T2"], "labelsTr", case)
+                output_image_folder = os.path.join(input_folder, MODALITY_FOLDERS["T2"], "imagesTr")
+                output_label_folder = os.path.join(input_folder, MODALITY_FOLDERS["T2"], "labelsTr")
 
             shutil.copyfile(os.path.join(image_input_folder, case), os.path.join(output_image_folder, case))
             shutil.copyfile(os.path.join(label_input_folder, case), os.path.join(output_label_folder, case))
