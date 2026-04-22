@@ -46,29 +46,28 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
     """
 
     case_map : dict[str, tuple[str, str]] = {}
-    for image_label_folder_pair in image_label_folder_pairs:
-        for image_folder, label_folder in image_label_folder_pair:
-            for case in os.listdir(image_folder):
-                if not case.endswith(NIFTI_FILE_ENDING):
-                    continue
-                case, _ = case.split(NIFTI_FILE_ENDING)
+    for image_folder, label_folder in image_label_folder_pairs:
+        for case in os.listdir(image_folder):
+            if not case.endswith(NIFTI_FILE_ENDING):
+                continue
+            case, _ = case.split(NIFTI_FILE_ENDING)
 
-                case_image = os.path.join(image_folder, case)
-                case_label = os.path.join(label_folder, case)
+            case_image = os.path.join(image_folder, case)
+            case_label = os.path.join(label_folder, case)
 
-                if not os.path.isfile(case_label):
-                    print(f"WARNING: cannot file label file for {case}. Skipping.")
-                    continue
+            if not os.path.isfile(case_label):
+                print(f"WARNING: cannot file label file for {case}. Skipping.")
+                continue
 
-                if not validate_nifti_label(case_label, list(label_map.values())):
-                    print(f"WARNING: label file has missing labels for {case}. Skipping.")
-                    continue
+            if not validate_nifti_label(case_label, list(label_map.values())):
+                print(f"WARNING: label file has missing labels for {case}. Skipping.")
+                continue
 
-                if case in case_map:
-                    print(f"WARNING: duplicate case: {case}. Skipping.")
-                    continue
+            if case in case_map:
+                print(f"WARNING: duplicate case: {case}. Skipping.")
+                continue
 
-                case_map[case] = (case_image, case_label)
+            case_map[case] = (case_image, case_label)
 
     for case, (src_image, src_label) in case_map.items():
         dest_folder = os.path.join(output_folder, "nnUNet_raw", f"Dataset001_{dataset_name}")
