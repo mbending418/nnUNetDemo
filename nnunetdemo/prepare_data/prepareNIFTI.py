@@ -30,6 +30,11 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
     given a bunch of folders with image and label data
     produce a dataset compliant with nnUNet complete with dataset.json file
 
+    The output folder will include:
+        nnUNet_raw
+        nnUNet_preprocessed
+        dataset.json
+
     :param image_label_folder_pairs: list of tuples where the first entry of each tuple is the image and the second entry is the label
     :param output_folder: where to save the data
     :param dataset_name: the name of the dataset "eg. Liver"
