@@ -2,7 +2,7 @@ import os
 import click
 import shutil
 from typing import Literal
-from nnunetv2.experiment_planning.plan_and_preprocess_api import extract_fingerprints, plan_experiments, preprocess
+#from nnunetv2.experiment_planning.plan_and_preprocess_api import extract_fingerprints, plan_experiments, preprocess
 from nnunetdemo.prepare_data.prepareNIFTI import prepare_nifti, NIFTI_FILE_ENDING
 
 ALL_LABELS = {
@@ -132,11 +132,11 @@ def run_setup_amos22(input_folder: str,
                    output_folder=output_folder)
 
     #add paths to environment variables
-    os.environ["nnUNet_raw"] = os.path.join(output_folder, "nnUNet_raw")
-    os.environ["nnUNet_preprocessed"] = os.path.join(output_folder, "nnUNet_preprocessed")
-    os.environ["nnUNet_results"] = os.path.join(output_folder, "nnUNet_results")
+    #os.environ["nnUNet_raw"] = os.path.join(output_folder, "nnUNet_raw")
+    #os.environ["nnUNet_preprocessed"] = os.path.join(output_folder, "nnUNet_preprocessed")
+    #os.environ["nnUNet_results"] = os.path.join(output_folder, "nnUNet_results")
 
-    extract_fingerprints(dataset_ids = [dataset_id],
-                         check_dataset_integrity=True)
-    plans_identifier = plan_experiments(dataset_ids = [dataset_id])
-    preprocess(dataset_ids = [dataset_id],plans_identifier=plans_identifier)
+    #extract_fingerprints(dataset_ids = [dataset_id],
+    #                     check_dataset_integrity=True)
+    #plans_identifier = plan_experiments(dataset_ids = [dataset_id])
+    #preprocess(dataset_ids = [dataset_id],plans_identifier=plans_identifier)
