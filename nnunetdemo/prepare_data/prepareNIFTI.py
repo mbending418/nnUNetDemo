@@ -52,8 +52,8 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
                 continue
             case, _ = case.split(NIFTI_FILE_ENDING)
 
-            case_image = os.path.join(image_folder, case)
-            case_label = os.path.join(label_folder, case)
+            case_image = os.path.join(image_folder, case + NIFTI_FILE_ENDING)
+            case_label = os.path.join(label_folder, case + NIFTI_FILE_ENDING)
 
             if not os.path.isfile(case_label):
                 print(f"WARNING: cannot file label file for {case}. Skipping.")
