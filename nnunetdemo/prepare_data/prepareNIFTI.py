@@ -25,7 +25,8 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
                   output_folder: str,
                   dataset_name: str,
                   label_map: dict[str, int],
-                  modality: str):
+                  modality: str,
+                  dataset_id: int = 1):
     """
     given a bunch of folders with image and label data
     produce a dataset compliant with nnUNet complete with dataset.json file
@@ -42,8 +43,17 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
         for instance if the data is labeled where "liver" is 1 and "stomach" is 11
         then this label_map is {"liver" : 1, "stomach" : 11}
     :param modality: the 'modality' or 'channel name' eg "CT", "MR", "T2", "ADC", etc
+    :param dataset_id: the id of the dataset (int between 0 and 999)
     :return:
     """
+    if dataset_id < 1 or dataset_id > 999:
+        raise Exception("dataset_id must be between 1 and 999")
+    dataset_id = str(dataset_id)
+    if len(dataset_id) == 1:
+        dataset_id = "00"+dataset_id
+    elif len(dataset_id) == 2:
+        dataset_id = "0"+dataset_id
+    dataset_name = f"Dataset{dataset_id}_{dataset_name}"
 
     case_map : dict[str, tuple[str, str]] = {}
     for image_folder, label_folder in image_label_folder_pairs:
@@ -69,7 +79,7 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
 
             case_map[case] = (case_image, case_label)
 
-    dest_folder = os.path.join(output_folder, "nnUNet_raw", f"Dataset001_{dataset_name}")
+    dest_folder = os.path.join(output_folder, "nnUNet_raw", dataset_name)
     if not os.path.isdir(dest_folder):
         os.makedirs(dest_folder)
     if not os.path.isdir(os.path.join(dest_folder, "imagesTr")):

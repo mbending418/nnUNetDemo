@@ -84,6 +84,7 @@ def sort_amos22(input_folder: str,
 
 def prepare_amos22(input_folder: str,
                    dataset_name: str,
+                   dataset_id: int,
                    modality: Literal["CT", "T2"],
                    label_names: tuple[str,...],
                    output_folder="output"):
@@ -100,7 +101,8 @@ def prepare_amos22(input_folder: str,
                   dataset_name=dataset_name,
                   label_map={label: ALL_LABELS[label] for label in label_names},
                   modality=modality,
-                  output_folder=output_folder)
+                  output_folder=output_folder,
+                  dataset_id=dataset_id)
 
 @click.command()
 @click.argument("input_folder", type=click.Path(exists=True))
@@ -111,17 +113,20 @@ def run_sort_amos22(input_folder: str, subfolders_to_sort: tuple[str, ...]):
 @click.command()
 @click.argument('input_folder', type=click.Path(exists=True))
 @click.argument('dataset_name', type=str)
+@click.argument("dataset_id", type=int)
 @click.argument("output_folder", type=str, default="output")
 @click.argument('modality', type=str)
 @click.argument('label_names', type=str, nargs=-1)
 def run_setup_amos22(input_folder: str,
                      dataset_name: str,
+                     dataset_id: int,
                      output_folder: str,
                      modality: Literal["CT", "T2"],
                      label_names: tuple[str, ...]):
 
     prepare_amos22(input_folder=input_folder,
                    dataset_name=dataset_name,
+                   dataset_id=dataset_id,
                    modality=modality,
                    label_names=label_names,
                    output_folder=output_folder)
