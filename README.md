@@ -52,17 +52,17 @@ If you are using the AMOS22 dataset run the following commands:
 	
 	unzip amos22.zip -d amos22
 	sort_AMOS22 amos22/amos22
-	setup_AMOS22 amos22/amos22 <dataset_name> <dataset_id> <output_folder> <modality> <label_name_1> <label_name_2> ...
+	setup_AMOS22 amos22/amos22 DatasetName DataSetID OutputFolder Modality LabelName_1 LabelName_2 ...
 
-<dataset_name> is what you want to call your dataset
+DatasetName is what you want to call your dataset
 
-<dataset_id> is a unique dataset identifier from 000 to 999
+DatasetID is a unique dataset identifier from 000 to 999
 
-<output_folder> is where you want to save the prepared data
+OutputFolder is where you want to save the prepared data
 
-<modality> is either "CT" or "T2" depending on if you want the CT or MR data
+Modality is either "CT" or "T2" depending on if you want the CT or MR data
 
-<label_name_i> is the ith label you wish to train your model on. eg liver, spleen, aorta, etc. Leave this off to train on all labels
+LabelName_i is the ith label you wish to train your model on. eg liver, spleen, aorta, etc. Leave this off to train on all labels
 
 If sort_AMOS22 or setup_AMOS22 don't work, make sure that the python `bin` directory is in your path. If it's still giving you trouble you should be able to open up a python console and manually import the functions to run like so:
 
@@ -97,7 +97,7 @@ You can read more about the preprocessing here (for instance if you want to setu
 ### Dataset: AMOS22
 If you are using the AMOS22 dataset run the following command:
 	
-	nnUNetv2_plan_and_preprocess -d <dataset_id> --verify_dataset_integrity
+	nnUNetv2_plan_and_preprocess -d DatasetID --verify_dataset_integrity
 
 If you are having trouble, make sure that the python `bin` directory is in your path.
 
@@ -110,10 +110,10 @@ You can read more about the training process here (for instance if you want to u
 ### Dataset: AMOS22
 If you are using the AMOS22 dataset run the following command:
 
-	nnUNetv2_train <dataset_id> <configuration> <fold>
+	nnUNetv2_train DatasetID CONFIGURATION FOLD
 
 where
 
-<configuration> is one of "2d", "3d_fullres", "3d_lowres", "3d_cascade_fullres". Depending on the side of the dataset, "3d_lowres" and/or "3d_cascade_fullres" may not be available.
+CONFIGURATION is one of "2d", "3d_fullres", "3d_lowres", "3d_cascade_fullres". Depending on the side of the dataset, "3d_lowres" and/or "3d_cascade_fullres" may not be available.
 
-<fold> is a number 0 through 4 which represents which of the "folds" in a 5 fold cross validation you which to train on.
+FOLD is a number 0 through 4 which represents which of the "folds" in a 5 fold cross validation you which to train on.
