@@ -6,6 +6,7 @@ import os
 
 NIFTI_FILE_ENDING = ".nii.gz"
 
+
 def validate_nifti_label(label_file: str, label_codes: list[int]) -> bool:
     """
     check to make sure the label file has all the appropriate labels
@@ -17,40 +18,44 @@ def validate_nifti_label(label_file: str, label_codes: list[int]) -> bool:
 
     lab = nib.load(label_file)
     for label_code in label_codes:
-        if np.sum(lab.get_fdata()==label_code) == 0:
+        if np.sum(lab.get_fdata() == label_code) == 0:
             return False
     return True
 
-def resave_nifti_label(src_label: str, dest_label: str, label_map: dict[int, str]) -> dict[str, int]:
+
+def resave_nifti_label(
+    src_label: str, dest_label: str, label_map: dict[int, str]
+) -> dict[str, int]:
     label = nib.load(src_label)
     label_data = np.array(label.get_fdata(), dtype=np.int32)
 
     label_ids = list(label_map.keys())
     label_ids.sort()
 
-    #mask out the unused labels
-    mask = label_data==label_data
+    # mask out the unused labels
+    mask = label_data == label_data
     for label_code in label_map.keys():
-        mask *= label_data!=label_code
-    label_data[mask]=0
+        mask *= label_data != label_code
+    label_data[mask] = 0
 
-    #relabel the used labels in order
-    new_label_map : dict[str, int] = {}
+    # relabel the used labels in order
+    new_label_map: dict[str, int] = {}
     for index, label_id in enumerate(label_ids):
-        label_data[label_data==label_id] = index + 1
+        label_data[label_data == label_id] = index + 1
         new_label_map[label_map[label_id]] = index + 1
-    new_label = nib.Nifti1Image(label_data,
-                                affine=label.affine,
-                                header=label.header)
+    new_label = nib.Nifti1Image(label_data, affine=label.affine, header=label.header)
     nib.save(new_label, dest_label)
     return new_label_map
 
-def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
-                  output_folder: str,
-                  dataset_name: str,
-                  label_map: dict[int, str],
-                  modality: str,
-                  dataset_id: int = 1):
+
+def prepare_nifti(
+    image_label_folder_pairs: list[tuple[str, str]],
+    output_folder: str,
+    dataset_name: str,
+    label_map: dict[int, str],
+    modality: str,
+    dataset_id: int = 1,
+):
     """
     given a bunch of folders with image and label data
     produce a dataset compliant with nnUNet complete with dataset.json file
@@ -74,12 +79,12 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
         raise Exception("dataset_id must be between 1 and 999")
     dataset_id = str(dataset_id)
     if len(dataset_id) == 1:
-        dataset_id = "00"+dataset_id
+        dataset_id = "00" + dataset_id
     elif len(dataset_id) == 2:
-        dataset_id = "0"+dataset_id
+        dataset_id = "0" + dataset_id
     dataset_name = f"Dataset{dataset_id}_{dataset_name}"
 
-    case_map : dict[str, tuple[str, str]] = {}
+    case_map: dict[str, tuple[str, str]] = {}
     for image_folder, label_folder in image_label_folder_pairs:
         for case in os.listdir(image_folder):
             if not case.endswith(NIFTI_FILE_ENDING):
@@ -112,7 +117,9 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
         os.makedirs(os.path.join(dest_folder, "labelsTr"))
 
     for case, (src_image, src_label) in case_map.items():
-        dest_image = os.path.join(dest_folder, "imagesTr", f"{case}_0000{NIFTI_FILE_ENDING}")
+        dest_image = os.path.join(
+            dest_folder, "imagesTr", f"{case}_0000{NIFTI_FILE_ENDING}"
+        )
         dest_label = os.path.join(dest_folder, "labelsTr", f"{case}{NIFTI_FILE_ENDING}")
 
         shutil.copyfile(src_image, dest_image)
@@ -122,12 +129,10 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
 
         output_json = {
             "channel_names": {"0": modality},
-            "labels" : new_label_map,
-            "numTraining" : len(case_map),
-            "file_ending" : NIFTI_FILE_ENDING,
+            "labels": new_label_map,
+            "numTraining": len(case_map),
+            "file_ending": NIFTI_FILE_ENDING,
         }
 
-        with open(os.path.join(dest_folder, "dataset.json"), 'w') as jf:
+        with open(os.path.join(dest_folder, "dataset.json"), "w") as jf:
             json.dump(output_json, jf, indent=4)
-
-
