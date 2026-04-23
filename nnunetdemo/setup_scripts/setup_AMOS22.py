@@ -133,6 +133,8 @@ def prepare_amos22(
 @click.argument("input_folder", type=click.Path(exists=True))
 @click.argument("subfolders_to_sort", type=str, nargs=-1)
 def run_sort_amos22(input_folder: str, subfolders_to_sort: tuple[str, ...]):
+    if len(subfolders_to_sort) == 0:
+        subfolders_to_sort = ("Tr", "Va")
     sort_amos22(input_folder=input_folder, subfolders_to_sort=subfolders_to_sort)
 
 
