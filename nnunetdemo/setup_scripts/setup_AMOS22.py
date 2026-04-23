@@ -153,6 +153,8 @@ def run_setup_amos22(
     modality: Literal["CT", "T2"],
     label_names: tuple[str, ...],
 ):
+    if len(label_names) == 0:
+        label_names = tuple(ALL_LABELS.keys())
 
     prepare_amos22(
         input_folder=input_folder,
