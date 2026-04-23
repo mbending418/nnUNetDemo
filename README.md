@@ -14,7 +14,8 @@ citation:
 https://zenodo.org/records/7155725
 
 Citation:
-JI YUANFENG. (2022). Amos: A large-scale abdominal multi-organ benchmark for versatile medical image segmentation \[Data set]. Zenodo. https://doi.org/10.5281/zenodo.7155725
+
+	JI YUANFENG. (2022). Amos: A large-scale abdominal multi-organ benchmark for versatile medical image segmentation \[Data set]. Zenodo. https://doi.org/10.5281/zenodo.7155725
 
 To download the data from a command line utility run the following command:
 
@@ -26,8 +27,8 @@ This will download a zip file called "amos22.zip"
 https://flare22.grand-challenge.org/
 
 Citation:
-Home—MICCAI FLARE 2022—Grand Challenge. (n.d.). Retrieved April 21, 2026, from https://flare22.grand-challenge.org/Home/
-MA. et al. Unleashing the strengths of unlabelled data in deep learning-assisted pan-cancer abdominal organ quantification: the FLARE22 challenge. https://doi.org/10.1016/S2589-7500(24)00154-7
+
+	Home—MICCAI FLARE 2022—Grand Challenge. (n.d.). Retrieved April 21, 2026, from https://flare22.grand-challenge.org/Home/ MA. et al. Unleashing the strengths of unlabelled data in deep learning-assisted pan-cancer abdominal organ quantification: the FLARE22 challenge. https://doi.org/10.1016/S2589-7500(24)00154-7
 
 
 ### Other
@@ -54,9 +55,13 @@ If you are using the AMOS22 dataset run the following commands:
 	setup_AMOS22 amos22/amos22 <dataset_name> <dataset_id> <output_folder> <modality> <label_name_1> <label_name_2> ...
 
 <dataset_name> is what you want to call your dataset
+
 <dataset_id> is a unique dataset identifier from 000 to 999
+
 <output_folder> is where you want to save the prepared data
+
 <modality> is either "CT" or "T2" depending on if you want the CT or MR data
+
 <label_name_i> is the ith label you wish to train your model on. eg liver, spleen, aorta, etc. Leave this off to train on all labels
 
 If sort_AMOS22 or setup_AMOS22 don't work, make sure that the python `bin` directory is in your path. If it's still giving you trouble you should be able to open up a python console and manually import the functions to run like so:
@@ -108,5 +113,7 @@ If you are using the AMOS22 dataset run the following command:
 	nnUNetv2_train <dataset_id> <configuration> <fold>
 
 where
+
 <configuration> is one of "2d", "3d_fullres", "3d_lowres", "3d_cascade_fullres". Depending on the side of the dataset, "3d_lowres" and/or "3d_cascade_fullres" may not be available.
+
 <fold> is a number 0 through 4 which represents which of the "folds" in a 5 fold cross validation you which to train on.
