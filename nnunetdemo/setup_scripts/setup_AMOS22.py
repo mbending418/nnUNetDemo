@@ -33,7 +33,7 @@ def is_ct(amos_file: str) -> bool:
     return code < 500
 
 
-subfolders = ("Tr", "Va", "Ts")
+subfolders = ("Tr", "Va")
 
 
 def sort_amos22(input_folder: str, subfolders_to_sort: tuple[str, ...] = subfolders):
