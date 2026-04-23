@@ -21,10 +21,34 @@ def validate_nifti_label(label_file: str, label_codes: list[int]) -> bool:
             return False
     return True
 
+def resave_nifti_label(src_label: str, dest_label: str, label_map: dict[int, str]) -> dict[str, int]:
+    label = nib.load(src_label)
+    label_data = np.array(label.get_fdata(), dtype=np.int32)
+
+    label_ids = list(label_map.keys())
+    label_ids.sort()
+
+    #mask out the unused labels
+    mask = label_data==label_data
+    for label_code in label_map.keys():
+        mask *= label_data!=label_code
+    label_data[mask]=0
+
+    #relabel the used labels in order
+    new_label_map : dict[str, int] = {}
+    for index, label_id in enumerate(label_ids):
+        label_data[label_data==label_id] = index + 1
+        new_label_map[label_map[label_id]] = index + 1
+    new_label = nib.Nifti1Image(label_data,
+                                affine=label.affine,
+                                header=label.header)
+    nib.save(new_label, dest_label)
+    return new_label_map
+
 def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
                   output_folder: str,
                   dataset_name: str,
-                  label_map: dict[str, int],
+                  label_map: dict[int, str],
                   modality: str,
                   dataset_id: int = 1):
     """
@@ -39,9 +63,9 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
     :param image_label_folder_pairs: list of tuples where the first entry of each tuple is the image and the second entry is the label
     :param output_folder: where to save the data
     :param dataset_name: the name of the dataset "eg. Liver"
-    :param label_map: map from structure name to labelID
+    :param label_map: map from labeID to structure name
         for instance if the data is labeled where "liver" is 1 and "stomach" is 11
-        then this label_map is {"liver" : 1, "stomach" : 11}
+        then this label_map is {1: "liver", 11: "stomach"}
     :param modality: the 'modality' or 'channel name' eg "CT", "MR", "T2", "ADC", etc
     :param dataset_id: the id of the dataset (int between 0 and 999)
     :return:
@@ -92,21 +116,13 @@ def prepare_nifti(image_label_folder_pairs: list[tuple[str,str]],
         dest_label = os.path.join(dest_folder, "labelsTr", f"{case}{NIFTI_FILE_ENDING}")
 
         shutil.copyfile(src_image, dest_image)
+        new_label_map = resave_nifti_label(src_label, dest_label, label_map)
 
-        label = nib.load(src_label)
-        label_data = label.get_fdata()
-        mask = label_data==label_data
-        for label_code in label_map.values():
-            mask *= label_data!=label_code
-        label_data[mask]=0
-        new_label = nib.Nifti1Image(label_data, affine=label.affine, header=label.header)
-        nib.save(new_label, dest_label)
-
-        label_map["background"] = 0
+        new_label_map["background"] = 0
 
         output_json = {
             "channel_names": {"0": modality},
-            "labels" : label_map,
+            "labels" : new_label_map,
             "numTraining" : len(case_map),
             "file_ending" : NIFTI_FILE_ENDING,
         }

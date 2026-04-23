@@ -99,7 +99,7 @@ def prepare_amos22(input_folder: str,
 
     prepare_nifti(image_label_folder_pairs=[(image_folder, label_folder)],
                   dataset_name=dataset_name,
-                  label_map={label: ALL_LABELS[label] for label in label_names},
+                  label_map={ALL_LABELS[label]: label for label in label_names},
                   modality=modality,
                   output_folder=output_folder,
                   dataset_id=dataset_id)
