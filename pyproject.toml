@@ -30,4 +30,3 @@ dev = [
 [project.scripts]
 setup_AMOS22 = "nnunetdemo.setup_scripts.setup_AMOS22:run_setup_amos22"
 sort_AMOS22 =  "nnunetdemo.setup_scripts.setup_AMOS22:run_sort_amos22"
-fix_AMOS22 = "nnunetdemo.setup_scripts.fix_amos_dataset:fix_amos"
